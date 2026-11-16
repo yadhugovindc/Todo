@@ -17,15 +17,21 @@ export async function loginAction(formData: FormData): Promise<AuthResponse> {
     return { error: 'Email and password are required.' };
   }
 
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (error) {
-    return { error: error.message };
+    if (error) {
+      return { error: error.message };
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Sign in failed. Please try again.';
+    if (message.includes('NEXT_REDIRECT')) throw err;
+    return { error: message };
   }
 
   redirect('/dashboard');
@@ -48,30 +54,41 @@ export async function registerAction(formData: FormData): Promise<AuthResponse> 
     return { error: 'Passwords do not match.' };
   }
 
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-  if (error) {
-    return { error: error.message };
-  }
+    if (error) {
+      return { error: error.message };
+    }
 
-  // If Supabase has email confirmation enabled, user session might not be active immediately
-  if (data.user && data.session === null) {
-    return {
-      success: true,
-      message: 'Account created! Please check your email to confirm your account, then log in.',
-    };
+    // If Supabase has email confirmation enabled, user session might not be active immediately
+    if (data.user && data.session === null) {
+      return {
+        success: true,
+        message: 'Account created! Please check your email to confirm your account, then log in.',
+      };
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Registration failed. Please try again.';
+    if (message.includes('NEXT_REDIRECT')) throw err;
+    return { error: message };
   }
 
   redirect('/dashboard');
 }
 
 export async function logoutAction(): Promise<void> {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : '';
+    if (message.includes('NEXT_REDIRECT')) throw err;
+  }
   redirect('/login');
 }
