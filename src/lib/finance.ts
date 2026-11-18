@@ -1,4 +1,3 @@
-import { FIXED_RENT, MONTHLY_SALARY } from '@/lib/constants';
 import type { Expense, Income } from '@/types/database';
 
 export interface CategoryData {
@@ -22,7 +21,6 @@ export interface Totals {
   totalIncome: number;
   salaryIncome: number;
   otherIncome: number;
-  usingDefaultIncome: boolean;
   totalExpenses: number;
   remainingBalance: number;
   fixedRent: number;
@@ -31,26 +29,24 @@ export interface Totals {
 
 export function computeTotals(expenses: Expense[], incomes: Income[]): Totals {
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const variableExpenses = totalExpenses - FIXED_RENT;
+  const fixedRent = expenses
+    .filter((expense) => expense.category === 'Rent')
+    .reduce((sum, expense) => sum + expense.amount, 0);
+  const variableExpenses = totalExpenses - fixedRent;
 
-  const trackedIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
+  const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
   const salaryIncome = incomes
     .filter((income) => income.source === 'Salary')
     .reduce((sum, income) => sum + income.amount, 0);
-  const otherIncome = trackedIncome - salaryIncome;
-
-  // Fall back to the configured monthly salary until income is recorded
-  const usingDefaultIncome = incomes.length === 0;
-  const totalIncome = usingDefaultIncome ? MONTHLY_SALARY : trackedIncome;
+  const otherIncome = totalIncome - salaryIncome;
 
   return {
     totalIncome,
     salaryIncome,
     otherIncome,
-    usingDefaultIncome,
     totalExpenses,
     remainingBalance: totalIncome - totalExpenses,
-    fixedRent: FIXED_RENT,
+    fixedRent,
     variableExpenses,
   };
 }

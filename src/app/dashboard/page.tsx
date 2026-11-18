@@ -27,7 +27,6 @@ export default async function DashboardPage() {
           totalIncome={totals.totalIncome}
           salaryIncome={totals.salaryIncome}
           otherIncome={totals.otherIncome}
-          usingDefaultIncome={totals.usingDefaultIncome}
           totalExpenses={totals.totalExpenses}
           remainingBalance={totals.remainingBalance}
           fixedRent={totals.fixedRent}

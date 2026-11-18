@@ -6,7 +6,6 @@ interface SummaryCardsProps {
   totalIncome: number;
   salaryIncome: number;
   otherIncome: number;
-  usingDefaultIncome: boolean;
   totalExpenses: number;
   remainingBalance: number;
   fixedRent: number;
@@ -17,7 +16,6 @@ export default function SummaryCards({
   totalIncome,
   salaryIncome,
   otherIncome,
-  usingDefaultIncome,
   totalExpenses,
   remainingBalance,
   fixedRent,
@@ -43,8 +41,8 @@ export default function SummaryCards({
               ₹{totalIncome.toLocaleString('en-IN')}
             </p>
             <p className="truncate text-[10px] text-zinc-400 dark:text-zinc-500">
-              {usingDefaultIncome
-                ? 'Default salary — add income to customize'
+              {totalIncome === 0
+                ? 'No income recorded yet'
                 : `Salary ₹${salaryIncome.toLocaleString('en-IN')} · Other ₹${otherIncome.toLocaleString('en-IN')}`}
             </p>
           </div>
