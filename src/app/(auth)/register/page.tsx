@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { registerAction } from '@/app/actions/auth';
 import {
-  CheckSquare,
+  Wallet,
   Lock,
   Mail,
   Loader2,
@@ -58,19 +58,19 @@ export default function RegisterPage() {
       <div className="w-full max-w-md space-y-8">
         {/* Brand Header */}
         <div className="text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-none">
-            <CheckSquare className="h-7 w-7" />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-200 dark:shadow-none">
+            <Wallet className="h-7 w-7" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
             Create an account
           </h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Sign up to start organizing and managing your tasks
+            Sign up to start tracking your expenses
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-xl shadow-zinc-200/50 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none">
+        <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-xl shadow-zinc-200/50 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none sm:p-8">
           {error && (
             <div className="mb-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-700 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-300">
               <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />

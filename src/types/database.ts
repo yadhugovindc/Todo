@@ -6,41 +6,72 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type TaskStatus = 'pending' | 'completed';
-
-export type Task = {
+export type Expense = {
   id: string;
   user_id: string;
   title: string;
-  description: string;
-  status: TaskStatus;
+  amount: number;
+  category: string;
+  date: string; // YYYY-MM-DD
+  payment_method: string;
   created_at: string;
   updated_at: string;
 };
 
-export type CreateTaskInput = {
+export type CreateExpenseInput = {
   title: string;
-  description?: string;
-  status?: TaskStatus;
+  amount: number;
+  category: string;
+  date: string;
+  payment_method: string;
 };
 
-export type UpdateTaskInput = {
+export type UpdateExpenseInput = {
   title?: string;
-  description?: string;
-  status?: TaskStatus;
+  amount?: number;
+  category?: string;
+  date?: string;
+  payment_method?: string;
+};
+
+export type Income = {
+  id: string;
+  user_id: string;
+  title: string;
+  amount: number;
+  source: string;
+  date: string; // YYYY-MM-DD
+  created_at: string;
+  updated_at: string;
+};
+
+export type CreateIncomeInput = {
+  title: string;
+  amount: number;
+  source: string;
+  date: string;
+};
+
+export type UpdateIncomeInput = {
+  title?: string;
+  amount?: number;
+  source?: string;
+  date?: string;
 };
 
 export interface Database {
   public: {
     Tables: {
-      tasks: {
-        Row: Task;
+      expenses: {
+        Row: Expense;
         Insert: {
           id?: string;
           user_id: string;
           title: string;
-          description?: string;
-          status?: TaskStatus;
+          amount: number;
+          category?: string;
+          date?: string;
+          payment_method?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -48,8 +79,34 @@ export interface Database {
           id?: string;
           user_id?: string;
           title?: string;
-          description?: string;
-          status?: TaskStatus;
+          amount?: number;
+          category?: string;
+          date?: string;
+          payment_method?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      incomes: {
+        Row: Income;
+        Insert: {
+          id?: string;
+          user_id: string;
+          title: string;
+          amount: number;
+          source?: string;
+          date?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          amount?: number;
+          source?: string;
+          date?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -70,3 +127,30 @@ export interface Database {
     };
   };
 }
+
+export const EXPENSE_CATEGORIES = [
+  'Food',
+  'Travel',
+  'Rent',
+  'Shopping',
+  'Bills',
+  'Entertainment',
+  'Others',
+] as const;
+
+export const INCOME_SOURCES = [
+  'Salary',
+  'Freelance',
+  'Business',
+  'Investments',
+  'Gifts',
+  'Other',
+] as const;
+
+export const PAYMENT_METHODS = [
+  'Cash',
+  'UPI',
+  'Card',
+  'Wallet',
+  'Net Banking',
+] as const;
